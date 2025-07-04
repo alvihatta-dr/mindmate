@@ -24,6 +24,15 @@ client = genai.Client()
 def index():
     return render_template("index.html")
 
+@app.route("/generate", methods=["POST"])
+def generate():
+    try:
+        user_input = request.json.get("user_input")
+        response = model.generate_content(user_input)
+        return jsonify({"response": response.text})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/konsultasi", methods=["POST"])
 def konsultasi():
     data = request.get_json()

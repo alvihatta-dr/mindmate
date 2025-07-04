@@ -6,13 +6,13 @@ import markdown
 
 app = Flask(__name__)
 
-# API Key dari environment
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
-# Pastikan API key tidak None
 if not api_key:
-    raise ValueError("API key tidak ditemukan. Pastikan GEMINI_API_KEY ada di file .env")
+    raise ValueError("API key tidak ditemukan. Pastikan GEMINI_API_KEY sudah diatur.")
+
+genai.configure(api_key=api_key)
 
 # Konfigurasi Gemini client
 os.environ["GEMINI_API_KEY"] = api_key

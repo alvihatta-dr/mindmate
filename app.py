@@ -10,7 +10,9 @@ load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
 if not api_key:
-    raise ValueError("API key tidak ditemukan. Pastikan GEMINI_API_KEY sudah diatur.")
+    import sys
+    print("API key tidak ditemukan. Setel GEMINI_API_KEY sebagai environment variable atau di .env")
+    sys.exit(1)
 
 genai.configure(api_key=api_key)
 

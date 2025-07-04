@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>MindMate – Hasil Konsultasi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="header">
+    <h1>🧠 MindMate</h1>
+    <p>Jawaban dari AI Konsultan Kesehatanmu</p>
+  </div>
+
+  {% if reply %}
+  <div class="chat-result">
+    <h3>Pertanyaan Kamu:</h3>
+    <div class="user-msg">{{ user_input }}</div>
+
+    <h3>Jawaban MindMate:</h3>
+    <div class="alert alert-info mt-2">{{ reply|safe }}</div>
+
+    <a href="/" class="back-btn">🔙 Konsultasi Lagi</a>
+  </div>
+  {% endif %}
+  
+  <footer>
+    <p>&copy; 2025 MindMate • Jaga kesehatanmu, selalu 💙</p>
+  </footer>
+</body>
+</html>

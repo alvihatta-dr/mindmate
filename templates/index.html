@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>MindMate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <main>
+    <div class="header">
+      <div class="logo-title">
+        <img src="{{ url_for('static', filename='assets/mental.png') }}" alt="Logo" />
+        <h1>MindMate</h1>
+      </div>
+      <p class="subtitle">Konsultasi kesehatan mental ringan dengan bantuan AI</p>
+    </div>
+
+    <div class="form-box">
+      <form id="konsultasi-form">
+        <label for="question">Apa yang sedang kamu rasakan?</label>
+        <textarea id="question" name="question" placeholder="Contoh: Saya sedang merasa cemas dan sulit tidur..." required></textarea>
+        <button type="submit">💬 Konsultasikan Sekarang</button>
+      </form>
+      <div class="response-box" id="responseBox"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+        <a href="mailto:alvi.hatta_ti23@nusaputra.ac.id" class="mailto-link">alvi.hatta_ti23@nusaputra.ac.id</a>
+        <!-- Social links -->
+        <div class="social">
+          <a href="#" target="_blank"
+            ><img src="{{ url_for('static', filename='assets/facebook-icon.svg') }}" alt="Facebook"
+          /></a>
+          <a href="#" target="_blank"><img src="{{ url_for('static', filename='assets/twitter-icon.svg') }}" alt="Twitter" /></a>
+          <a href="#" target="_blank"
+            ><img src="{{ url_for('static', filename='assets/linkedin-icon.svg') }}" alt="Linkedin"
+          /></a>
+          <a href="https://github.com/alvihatta-dr" target="_blank"><img src="{{ url_for('static', filename='assets/github-icon.svg') }}" alt="GitHub" /></a>
+          <a href="https://www.instagram.com/alvihatta_/" target="_blank"
+            ><img src="{{ url_for('static', filename='assets/instagram-icon.svg') }}" alt="Instagram"
+          /></a>
+        </div>
+        <p>&copy; 2025 MindMate • Dibuat dengan ♥ untuk kesehatanmu</p>
+      </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('konsultasi-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pesan = document.getElementById('question').value;
+    const responseBox = document.getElementById('responseBox');
+    responseBox.innerHTML = "⏳ Sedang memproses...";
+
+    const res = await fetch('/konsultasi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pesan })
+    });
+
+    const data = await res.json();
+    responseBox.innerHTML = data.jawaban; // <<< HARUS PAKAI innerHTML
+  }); 
+  </script>
+</body>
+</html>

@@ -1,39 +1,34 @@
-import os
 from flask import Flask, request, jsonify, render_template
-from dotenv import load_dotenv
 import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 import markdown
 
-# Load .env
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
-# Validasi API Key
 if not api_key:
-    raise ValueError("API key tidak ditemukan. Pastikan GEMINI_API_KEY sudah diatur.")
+    raise ValueError("GEMINI_API_KEY tidak ditemukan di environment.")
 
-# Konfigurasi Gemini API
 genai.configure(api_key=api_key)
-model = genai.GenerativeModel("gemini-pro")
 
-# Inisialisasi Flask
 app = Flask(__name__)
 
-# Routes
-@app.route("/")
-def home():
-    return render_template("index.html")
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route("/ask", methods=["POST"])
-def ask():
+@app.route('/konsultasi', methods=['POST'])
+def konsultasi():
     data = request.get_json()
-    prompt = data.get("prompt", "")
-
-    if not prompt:
-        return jsonify({"error": "Prompt tidak boleh kosong"}), 400
+    pesan = data.get('pesan')
 
     try:
-        response = model.generate_content(prompt)
-        return jsonify({"response": response.text})
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        response = model.generate_content(pesan)
+
+        # Konversi Markdown → HTML
+        html_jawaban = markdown.markdown(response.text)
+        return jsonify({'jawaban': html_jawaban})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({'jawaban': f"❌ Error: {str(e)}"})
